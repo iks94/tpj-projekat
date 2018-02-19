@@ -17,7 +17,7 @@ public partial class MainWindow
 	
 	private global::Gtk.Label label1;
 	
-	private global::Gtk.HScale hscale1;
+	private global::Gtk.HScale selektor;
 	
 	private global::Gtk.HSeparator hseparator3;
 	
@@ -32,15 +32,13 @@ public partial class MainWindow
 	private global::Gtk.VSeparator vseparator1;
 	
 	private global::Gtk.Alignment alignment1;
-	
-	private global::Gtk.Image image2;
 
 	protected virtual void Build ()
 	{
 		global::Stetic.Gui.Initialize (this);
 		// Widget MainWindow
 		this.Name = "MainWindow";
-		this.Title = global::Mono.Unix.Catalog.GetString ("MainWindow");
+		this.Title = global::Mono.Unix.Catalog.GetString ("Seam Carving");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 		this.BorderWidth = ((uint)(6));
 		// Container child MainWindow.Gtk.Container+ContainerChild
@@ -99,18 +97,17 @@ public partial class MainWindow
 		w4.Expand = false;
 		w4.Fill = false;
 		// Container child hbox4.Gtk.Box+BoxChild
-		this.hscale1 = new global::Gtk.HScale (null);
-		this.hscale1.CanFocus = true;
-		this.hscale1.Name = "hscale1";
-		this.hscale1.Adjustment.Upper = 100;
-		this.hscale1.Adjustment.PageIncrement = 10;
-		this.hscale1.Adjustment.StepIncrement = 1;
-		this.hscale1.Adjustment.Value = 40;
-		this.hscale1.DrawValue = true;
-		this.hscale1.Digits = 0;
-		this.hscale1.ValuePos = ((global::Gtk.PositionType)(2));
-		this.hbox4.Add (this.hscale1);
-		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.hscale1]));
+		this.selektor = new global::Gtk.HScale (null);
+		this.selektor.CanFocus = true;
+		this.selektor.Name = "selektor";
+		this.selektor.Adjustment.Upper = 100;
+		this.selektor.Adjustment.PageIncrement = 10;
+		this.selektor.Adjustment.StepIncrement = 1;
+		this.selektor.DrawValue = true;
+		this.selektor.Digits = 0;
+		this.selektor.ValuePos = ((global::Gtk.PositionType)(2));
+		this.hbox4.Add (this.selektor);
+		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.hbox4 [this.selektor]));
 		w5.Position = 1;
 		this.vbox1.Add (this.hbox4);
 		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox4]));
@@ -182,24 +179,23 @@ public partial class MainWindow
 		// Container child hbox3.Gtk.Box+BoxChild
 		this.alignment1 = new global::Gtk.Alignment (0.5F, 0.5F, 1F, 1F);
 		this.alignment1.Name = "alignment1";
-		// Container child alignment1.Gtk.Container+ContainerChild
-		this.image2 = new global::Gtk.Image ();
-		this.image2.Name = "image2";
-		this.alignment1.Add (this.image2);
 		this.hbox3.Add (this.alignment1);
-		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.alignment1]));
-		w15.Position = 2;
-		w15.Fill = false;
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.alignment1]));
+		w14.Position = 2;
+		w14.Fill = false;
 		this.Add (this.hbox3);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
 		this.DefaultWidth = 597;
 		this.DefaultHeight = 393;
-		this.label1.MnemonicWidget = this.hscale1;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
+		this.radioHor.Toggled += new global::System.EventHandler (this.OnRadioHorToggled);
+		this.radioVert.Toggled += new global::System.EventHandler (this.OnRadioVertToggled);
+		this.selektor.ValueChanged += new global::System.EventHandler (this.OnSelektorValueChanged);
 		this.button1.Clicked += new global::System.EventHandler (this.OnButton1Clicked);
+		this.button3.Clicked += new global::System.EventHandler (this.OnButton3Clicked);
 		this.button4.Clicked += new global::System.EventHandler (this.OnButton4Clicked);
 	}
 }

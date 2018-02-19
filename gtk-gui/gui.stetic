@@ -10,7 +10,7 @@
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="597 393">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="Title" translatable="yes">Seam Carving</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="BorderWidth">6</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
@@ -33,6 +33,7 @@
                 <property name="HasLabel">True</property>
                 <property name="UseUnderline">True</property>
                 <property name="Group">group1</property>
+                <signal name="Toggled" handler="OnRadioHorToggled" />
               </widget>
               <packing>
                 <property name="Position">0</property>
@@ -50,6 +51,7 @@
                 <property name="HasLabel">True</property>
                 <property name="UseUnderline">True</property>
                 <property name="Group">group1</property>
+                <signal name="Toggled" handler="OnRadioVertToggled" />
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -88,16 +90,16 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.HScale" id="hscale1">
+                  <widget class="Gtk.HScale" id="selektor">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Upper">100</property>
                     <property name="PageIncrement">10</property>
                     <property name="StepIncrement">1</property>
-                    <property name="Value">40</property>
                     <property name="DrawValue">True</property>
                     <property name="Digits">0</property>
                     <property name="ValuePos">Top</property>
+                    <signal name="ValueChanged" handler="OnSelektorValueChanged" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -157,6 +159,7 @@
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Sačuvaj</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButton3Clicked" />
               </widget>
               <packing>
                 <property name="Position">7</property>
@@ -207,9 +210,7 @@
           <widget class="Gtk.Alignment" id="alignment1">
             <property name="MemberName" />
             <child>
-              <widget class="Gtk.Image" id="image2">
-                <property name="MemberName" />
-              </widget>
+              <placeholder />
             </child>
           </widget>
           <packing>

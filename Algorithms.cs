@@ -92,15 +92,15 @@ namespace Projekat {
 				return null;
 			}
 
-			int len = ((int)b[0] << 0) + ((int)b[1] << 8) + ((int)b[2] << 16) + ((int)b[3] << 24);
+			int len = ((int)b[4] << 0) + ((int)b[5] << 8) + ((int)b[6] << 16) + ((int)b[7] << 24);
 			if (len > b.Length - 8) {
 				return null;
 			}
 
 			string s = "";
 
-			for (int i=0; i<b.Length; i++) {
-				s += b[i+8];
+			for (int i=0; i<len; i++) {
+				s += (char)b[i+8];
 			}
 
 			return s;

@@ -43,6 +43,8 @@ namespace Projekat
 				if (has) {
 					this.textView.Buffer.Text = message;
 				}
+			} else {
+				this.textView.Buffer.Text = message;
 			}
 
 			Box.BoxChild bchld;

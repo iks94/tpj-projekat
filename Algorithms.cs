@@ -53,6 +53,7 @@ namespace Projekat {
 						b[u] = (byte)((b[u] & ~(1u << v)) | (((matrix[i, j] >> k) & 1u) << v));
 						v++;
 						if (v == 8) {
+							v = 0;
 							u++;
 						}
 					}

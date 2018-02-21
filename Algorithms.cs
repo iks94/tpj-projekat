@@ -5,7 +5,107 @@ namespace Projekat {
 	
 	public class Algorithms {
 
-		public static uint pixelDiff(uint pixel1, uint pixel2) {
+		public static uint[,] WriteBytes(uint[,] matrix, byte[] b) {
+			int n = matrix.GetLength(0);
+			int m = matrix.GetLength(1);
+
+			if (b.Length*8 > n*m*3) {
+				return null;
+			}
+
+			uint[,] a = new uint[n, m];
+			for (int i=0; i<n; i++) {
+				for (int j=0; j<m; j++) {
+					a[i, j] = matrix[i, j];
+				}
+			}
+
+			int r = 0, c = 0, y = 0;
+			for (int i=0; i<b.Length; i++) {
+				for (int j=0; j<8; j++) {
+					a[r, c] = (uint)((a[r, c] & ~(1u << y)) | (((b[i] >> j) & 1u) << y));
+					y += 8;
+					if (y == 24) {
+						y = 0;
+						c++;
+						if (c == m) {
+							c = 0;
+							r++;
+						}
+					}
+				}
+			}
+				
+			return a;
+		}
+
+		public static byte[] ReadBytes(uint[,] matrix) {
+			int n = matrix.GetLength(0);
+			int m = matrix.GetLength(1);
+			int blen = (n * m * 3 + 7) / 8;
+			byte[] b = new byte[blen];
+
+			int u = 0, v = 0;
+
+			for (int i=0; i<n; i++) {
+				for (int j=0; j<m; j++) {
+					for (int k=0; k<24; k+=8) {
+						b[u] = (byte)((b[u] & ~(1u << v)) | (((matrix[i, j] >> k) & 1u) << v));
+						v++;
+						if (v == 8) {
+							u++;
+						}
+					}
+				}
+			}
+
+			return b;
+		}
+
+		public static uint[,] WriteSecret(uint[,] matrix, string b) {
+			byte[] c = new byte[b.Length + 8];
+
+			c[0] = (byte)'t';
+			c[1] = (byte)'p';
+			c[2] = (byte)'j';
+			c[3] = (byte)'p';
+
+			c[4] = (byte)(b.Length & 255);
+			c[5] = (byte)((b.Length >> 8) & 255);
+			c[6] = (byte)((b.Length >> 16) & 255);
+			c[7] = (byte)((b.Length >> 24) & 255);
+
+			for (int i=0; i<b.Length; i++) {
+				c[i+8] = (byte)b[i];
+			}
+
+			return WriteBytes(matrix, c);
+		}
+
+		public static string ReadSecret(uint[,] matrix) {
+			byte[] b = ReadBytes(matrix);
+			if (b.Length < 8) {
+				return null;
+			}
+			if (b[0] != 't' || b[1] != 'p' || b[2] != 'j' || b[3] != 'p') {
+				return null;
+			}
+
+			int len = ((int)b[0] << 0) + ((int)b[1] << 8) + ((int)b[2] << 16) + ((int)b[3] << 24);
+			if (len > b.Length - 8) {
+				return null;
+			}
+
+			string s = "";
+
+			for (int i=0; i<b.Length; i++) {
+				s += b[i+8];
+			}
+
+			return s;
+		}
+
+		public static uint PixelDiff(uint pixel1, uint pixel2) {
 			int r1 = (int)(0xff & (pixel1 >> 0));
 			int r2 = (int)(0xff & (pixel2 >> 0));
 			int g1 = (int)(0xff & (pixel1 >> 8));
@@ -48,16 +148,16 @@ namespace Projekat {
 			for (int i=1; i<n; i++) {
 				for (int j=0; j<m; j++) {
 					
-					dp[i, j] = dp[i-1, j] + pixelDiff(a[i, j], a[i-1, j]);
+					dp[i, j] = dp[i-1, j] + PixelDiff(a[i, j], a[i-1, j]);
 					dir[i, j] = 0;
 
 					uint l = 0xffffffff, r = 0xffffffff;
 
 					if (j > 0)
-						l = dp[i-1, j-1] + pixelDiff(a[i, j], a[i-1, j-1]);
+						l = dp[i-1, j-1] + PixelDiff(a[i, j], a[i-1, j-1]);
 
 					if (j < m-1)
-						r = dp[i-1, j+1] + pixelDiff(a[i, j], a[i-1, j+1]);
+						r = dp[i-1, j+1] + PixelDiff(a[i, j], a[i-1, j+1]);
 
 					if (l < dp[i, j]) {
 						dp[i, j] = l;
@@ -202,7 +302,6 @@ namespace Projekat {
 					return Transpose(b);
 				}
 			}
-
 		}
 	}
 }

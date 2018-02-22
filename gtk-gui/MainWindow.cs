@@ -342,7 +342,7 @@ public partial class MainWindow
 		this.btnCryptoSifriraj.CanFocus = true;
 		this.btnCryptoSifriraj.Name = "btnCryptoSifriraj";
 		this.btnCryptoSifriraj.UseUnderline = true;
-		this.btnCryptoSifriraj.Label = global::Mono.Unix.Catalog.GetString ("Šifriraj");
+		this.btnCryptoSifriraj.Label = global::Mono.Unix.Catalog.GetString ("Šifruj");
 		this.hbox1.Add (this.btnCryptoSifriraj);
 		global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.btnCryptoSifriraj]));
 		w23.Position = 0;
@@ -441,6 +441,8 @@ public partial class MainWindow
 		this.selektor.ValueChanged += new global::System.EventHandler (this.OnSelektorValueChanged);
 		this.btnSteganoPrikazi.Clicked += new global::System.EventHandler (this.OnBtnSteganoPrikaziClicked);
 		this.btnSteganoPostavi.Clicked += new global::System.EventHandler (this.OnBtnSteganoPostaviClicked);
+		this.btnCryptoSifriraj.Clicked += new global::System.EventHandler (this.OnBtnCryptoSifrirajClicked);
+		this.btnCryptoDesifruj.Clicked += new global::System.EventHandler (this.OnBtnCryptoDesifrujClicked);
 		this.button1.Clicked += new global::System.EventHandler (this.OnButton1Clicked);
 		this.button3.Clicked += new global::System.EventHandler (this.OnButton3Clicked);
 		this.button4.Clicked += new global::System.EventHandler (this.OnButton4Clicked);

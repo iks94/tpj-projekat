@@ -367,8 +367,9 @@
                                 <property name="MemberName" />
                                 <property name="CanFocus">True</property>
                                 <property name="Type">TextOnly</property>
-                                <property name="Label" translatable="yes">Šifriraj</property>
+                                <property name="Label" translatable="yes">Šifruj</property>
                                 <property name="UseUnderline">True</property>
+                                <signal name="Clicked" handler="OnBtnCryptoSifrirajClicked" />
                               </widget>
                               <packing>
                                 <property name="Position">0</property>
@@ -382,6 +383,7 @@
                                 <property name="Type">TextOnly</property>
                                 <property name="Label" translatable="yes">Dešifruj</property>
                                 <property name="UseUnderline">True</property>
+                                <signal name="Clicked" handler="OnBtnCryptoDesifrujClicked" />
                               </widget>
                               <packing>
                                 <property name="Position">1</property>

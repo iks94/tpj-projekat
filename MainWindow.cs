@@ -288,4 +288,16 @@ public partial class MainWindow: Gtk.Window {
 		}
 	}
 
+	protected void OnBtnCryptoSifrirajClicked (object sender, EventArgs e)
+	{
+		image.Pixels = Algorithms.Encrypt(imageMatrix, entryPassword.Text);
+		ReloadImage();
+	}
+
+	protected void OnBtnCryptoDesifrujClicked (object sender, EventArgs e)
+	{
+		image.Pixels = Algorithms.Decrypt(imageMatrix, entryPassword.Text);
+		ReloadImage();
+	}
+
 }

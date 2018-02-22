@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Projekat {
 	
@@ -304,6 +305,131 @@ namespace Projekat {
 				}
 			}
 		}
+
+		public class Keygen {
+
+			private static byte[] Convert(string s) {
+				char[] c = s.ToCharArray();
+				byte[] b = new byte[c.Length];
+				for (int i=0; i<c.Length; i++) {
+					b[i] = (byte)c[i];
+				}
+				return b;
+			}
+
+			private byte[] password;
+			private byte[] state = new byte[32];
+
+			public Keygen(string password) {
+				this.password = Keygen.Convert("30949i349i0fdsko30-" + password + "k20rk0kf029k20 2 2r-023kr");
+			}
+
+			public byte[] Next() {
+				byte[] stuff = new byte[state.Length + password.Length];
+				for (int i=0; i<state.Length; i++) {
+					stuff[i] = state[i];
+				}
+				for (int i=0; i<password.Length; i++) {
+					stuff[i + state.Length] = password[i];
+				}
+				state = SHA256.Create().ComputeHash(stuff);
+				return (byte[])state.Clone();
+			}
+		}
+
+		public class ByteGenerator {
+			Keygen kg;
+
+			public ByteGenerator(string s) {
+				kg = new Keygen(s);
+			}
+
+			int pos = 0;
+			byte[] data = null;
+
+			public byte Next() {
+				if (data == null || pos == 32) {
+					data = kg.Next();
+					pos = 0;
+				}
+				return data[pos++];
+			}
+
+			public uint nextUint24() {
+				uint x = (uint)this.Next();
+				x = 256*x + (uint)this.Next();
+				x = 256*x + (uint)this.Next();
+				return x;
+			}
+
+		}
+
+		public static uint[,] Encrypt(uint[,] matrix, string password) {
+			int n = matrix.GetLength(0);
+			int m = matrix.GetLength(1);
+
+			uint[,] result = new uint[n, m];
+
+			ByteGenerator g = new ByteGenerator(password);
+
+			// shift
+			for (int i=0; i<n; i++) {
+				for (int j=0; j<m; j++) {
+					int k=i, l=j+1;
+					if (l == m) {
+						l = 0;
+						k++;
+						if (k == n) {
+							k = 0;
+						}
+					}
+					result[i, j] = matrix[k, l];
+				}
+			}
+
+			// xor
+			for (int i=0; i<n; i++) {
+				for (int j=0; j<m; j++) {
+					result[i, j] ^= g.nextUint24();
+				}
+			}
+
+			return result;
+		}
+
+		public static uint[,] Decrypt(uint[,] matrix, string password) {
+			int n = matrix.GetLength(0);
+			int m = matrix.GetLength(1);
+
+			uint[,] result = new uint[n, m];
+
+			ByteGenerator g = new ByteGenerator(password);
+
+			// xor
+			for (int i=0; i<n; i++) {
+				for (int j=0; j<m; j++) {
+					matrix[i, j] ^= g.nextUint24();
+				}
+			}
+
+			// shift
+			for (int i=0; i<n; i++) {
+				for (int j=0; j<m; j++) {
+					int k=i, l=j+1;
+					if (l == m) {
+						l = 0;
+						k++;
+						if (k == n) {
+							k = 0;
+						}
+					}
+					result[k, l] = matrix[i, j];
+				}
+			}
+
+			return result;
+		}
+
 	}
 }
 
